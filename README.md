@@ -1,2 +1,2 @@
 # quarkus
-Quarkus developer kit for newbies.
+Quarkus quick look (for newbies).
