@@ -1,0 +1,60 @@
+# docker box definition
+box:
+  id: maven:latest
+  ports:
+    - "8080"
+
+# defining build pipeline
+build:
+  steps:
+    - script:
+      name: Maven Package
+      code: mvn package && echo "Package successfully created!!!"
+    
+    - internal/docker-push:
+            entrypoint: java -jar ./target/getting-started-1.0-SNAPSHOT-runner.jar
+            working-dir: $WERCKER_ROOT
+            tag: $WERCKER_GIT_COMMIT
+            ports: "8080"
+            username: $DOCKER_USERNAME
+            password: $DOCKER_PASSWORD
+            repository: $DOCKER_REPO
+            registry: https://iad.ocir.io/v2
+    - script:
+      name: Container
+      code: echo "Container successfully created"
+
+# deploying to k8 cluster
+deploy-to-kubernetes:
+    box: openjdk:8-jre-alpine
+    steps:
+
+    # https://github.com/wercker/step-bash-template
+    # This Wercker step will look for files in our repo with a .template extension.
+    # It will expand any environment variables in those files, then remove the
+    # template extension.
+    - bash-template
+
+    # The step above should leave us with a Kubernetes service and deployment yml files.
+    # We'll create a directory to move them to.
+    - script:
+        name: Prepare Kubernetes files
+        code: |
+          mkdir $WERCKER_OUTPUT_DIR/kubernetes
+          mv kubernetes_*.yml $WERCKER_OUTPUT_DIR/kubernetes
+    # `apply` is a good command to use here, as it'll create Kubernetes entities if they are missing.
+    - kubectl:
+        name: deploy to kubernetes
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/
+
+    # Watch the Kubernetes deployment. Once the pods are considered healthy the step will exit 0
+    # If they aren't healthy within 60 seconds, it will exit with a non 0 exit code, and cause the run to fail.
+    - kubectl:
+        name: check deployment status
+        server: $OKE_MASTER
+        token: $OKE_TOKEN
+        insecure-skip-tls-verify: true
+        command: rollout status deployment/quarkus

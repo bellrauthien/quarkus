@@ -24,7 +24,7 @@ public class GreetingResource {
     @Produces(MediaType.TEXT_PLAIN)
     public CompletionStage<String> hello() {
         return CompletableFuture.supplyAsync(() -> {
-            return "hellO";
+            return "hello";
         });
     }
 }
