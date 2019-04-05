@@ -5,25 +5,25 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: qrks
+  name: qrkus
   labels:
     commit: ${WERCKER_GIT_COMMIT}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: qrks
+      app: qrkus
   template:
     metadata:
       labels:
-        app: qrks
+        app: qrkus
         commit: ${WERCKER_GIT_COMMIT}
     spec:
       containers:
-      - name: qrks-server
+      - name: qrkus-server
         image: ${DOCKER_REPO}:${WERCKER_GIT_COMMIT}
         ports:
-        - name: qrks-server
+        - name: qrkus-server
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
