@@ -5,15 +5,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: qrkus
+  name: quarkus
   labels:
-    app: qrkus
+    app: quarkus
     commit: ${WERCKER_GIT_COMMIT}
 spec:
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: qrkus
+    app: quarkus
     commit: ${WERCKER_GIT_COMMIT}
   type: LoadBalancer
