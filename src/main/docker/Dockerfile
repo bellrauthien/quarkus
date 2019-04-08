@@ -11,16 +11,10 @@
 #
 # docker run -i --rm -p 8080:8080 quarkus/getting-started
 #
-###
+##
 FROM registry.fedoraproject.org/fedora-minimal
 WORKDIR /work/
 COPY target/*-runner /work/application
 RUN chmod 775 /work
 EXPOSE 8080
 CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
-
-#FROM openjdk:8-jre-alpine
-#RUN mkdir /app
-#COPY lib /app/lib
-#COPY ${project.artifactId}-1.0-SNAPSHOT-runner.jar /app
-#CMD ["java", "-jar", "/app/${project.artifactId}-1.0-SNAPSHOT-runner.jar"]
