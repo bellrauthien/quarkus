@@ -26,7 +26,7 @@ build:
 
 # deploying to k8 cluster
 deploy-to-kubernetes:
-    box: openjdk:8-jre-alpine
+    box: registry.fedoraproject.org/fedora-minimal
     steps:
 
     # https://github.com/wercker/step-bash-template
