@@ -11,7 +11,7 @@
 #
 # docker run -i --rm -p 8080:8080 quarkus/getting-started
 #
-###
+##
 FROM registry.fedoraproject.org/fedora-minimal
 WORKDIR /work/
 COPY target/*-runner /work/application
