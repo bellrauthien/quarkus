@@ -9,7 +9,10 @@ build:
   steps:
     - script:
       name: Maven Package
-      code: mvn package && echo "Package successfully created!!!"
+      code: mvn package -Pnative -Dnative-image.docker-build=true && echo "Package successfully created!!!"
+    - script:
+      name: Build Image
+      code: docker build -f src/main/docker/Dockerfile -t quarkus/getting-started .
     
     - internal/docker-push:
             entrypoint: java -jar ./target/getting-started-1.0-SNAPSHOT-runner.jar
