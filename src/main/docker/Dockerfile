@@ -21,5 +21,6 @@
 
 FROM openjdk:8-jre-alpine
 RUN mkdir /app
+COPY lib /app/lib
 COPY ${project.artifactId}-1.0-SNAPSHOT-runner.jar /app
 CMD ["java", "-jar", "/app/${project.artifactId}-1.0-SNAPSHOT-runner.jar"]
