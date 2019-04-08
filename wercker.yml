@@ -9,7 +9,7 @@ build:
   steps:
     - script:
       name: Maven Package
-      code: mvn package -Pnative -Dnative-image.docker-build=true && echo "Package successfully created!!!"
+      code: mvn package && echo "Package successfully created!!!"
  
     - internal/docker-push:
             entrypoint: java -jar ./target/getting-started-1.0-SNAPSHOT-runner.jar
